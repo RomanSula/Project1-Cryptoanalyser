@@ -16,7 +16,7 @@ public class BruteForce {
             resultList = new Decode().decodeTxtFile(fileName, i);
             if (isBruteForceSucceeded(resultList, accuracy)) {
                 successList.add(resultList);
-                System.out.println(i + " key looks good");
+                System.out.println("Key = " + i + " looks good");
             }
         }
 

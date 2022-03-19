@@ -47,13 +47,18 @@ public class StatisticalAnalysis {
         return resultList;
     }
 
-    public HashMap<Character, Character> confirmMaps(HashMap<Character, Double> encryptedMap, HashMap<Character, Double> exampleMap){
+    public HashMap<Character, Character> confirmMaps(HashMap<Character, Double> encryptedMap, HashMap<Character, Double> exampleMap) {
         HashMap<Character, Character> confirmationResult = new HashMap<>();
+
         for (Map.Entry<Character, Double> entry : exampleMap.entrySet()) {
+            double minDifference = 100.0;
             double frequencyExample = entry.getValue();
+
             for (Map.Entry<Character, Double> encryptedEntry : encryptedMap.entrySet()) {
                 double frequencyEncrypted = encryptedEntry.getValue();
-                if (Math.abs(frequencyExample - frequencyEncrypted) < frequencyExample * 0.035){
+                double tmpDifference = Math.abs(frequencyExample - frequencyEncrypted);
+                if (tmpDifference < minDifference) {
+                    minDifference = tmpDifference;
                     confirmationResult.put(entry.getKey(), encryptedEntry.getKey());
                 }
             }

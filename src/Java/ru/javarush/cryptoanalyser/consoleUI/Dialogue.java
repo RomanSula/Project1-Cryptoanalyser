@@ -5,6 +5,7 @@ import ru.javarush.cryptoanalyser.cryptography.BruteForce;
 import ru.javarush.cryptoanalyser.cryptography.Decode;
 import ru.javarush.cryptoanalyser.cryptography.Encode;
 import ru.javarush.cryptoanalyser.cryptography.StatisticalAnalysis;
+import ru.javarush.cryptoanalyser.utility.PreviousFileCleaner;
 import ru.javarush.cryptoanalyser.utility.TxtFileWriter;
 
 import java.nio.file.Files;
@@ -16,7 +17,11 @@ public class Dialogue {
     public void Start() {
 
         System.out.println("Format of commands is: [command] [file_name] [key_value] or [accuracy]");
-        System.out.println("[command]: [C] crypt, [D] decrypt, [B] Bruteforce, [exit] escape");
+        System.out.println("[command]: [C] Crypt, [D] Decrypt, [B] Bruteforce, [A] StatisticalAnalysis, [exit] escape");
+        System.out.println("For [C]: c NormalFile.txt key(int)");
+        System.out.println("For [D]: d NormalFile.txt key(int)");
+        System.out.println("For [B]: b EncryptedFile.txt accuracy(0.95)");
+        System.out.println("For [A]: a EncryptedFile.txt ExampleFileName.txt");
         Scanner console = new Scanner(System.in);
         String inLine = console.nextLine();
 
@@ -26,18 +31,22 @@ public class Dialogue {
 
             if (isValidCommand(userCommands) && isValidFile(userCommands[1])) {
                 if (userCommands[0].equalsIgnoreCase("c")) {
-                    List<String> resultList = new Encode().encodeTxtFile(Path.of(userCommands[1]), Integer.parseInt(userCommands[2]));
-                    new TxtFileWriter().fileWriterMethod(resultList, "encrypted.txt");
+                    Path encryptedFileName = Path.of("encrypted.txt");
+                    new PreviousFileCleaner().cleanPreviousFiles(encryptedFileName);
+                    List<String> cResultList = new Encode().encodeTxtFile(Path.of(userCommands[1]), Integer.parseInt(userCommands[2]));
+                    new TxtFileWriter().fileWriterMethod(cResultList, "encrypted.txt");
                 }
                 if (userCommands[0].equalsIgnoreCase("d")){
-                    List<String> resultList = new Decode().decodeTxtFile(Path.of(userCommands[1]), Integer.parseInt(userCommands[2]));
-                    new TxtFileWriter().fileWriterMethod(resultList, "decrypted.txt");
+                    Path decryptedFileName = Path.of("decrypted.txt");
+                    new PreviousFileCleaner().cleanPreviousFiles(decryptedFileName);
+                    List<String> dResultList = new Decode().decodeTxtFile(Path.of(userCommands[1]), Integer.parseInt(userCommands[2]));
+                    new TxtFileWriter().fileWriterMethod(dResultList, "decrypted.txt");
                 }
                 if (userCommands[0].equalsIgnoreCase("b")){
                     double accuracy = Double.parseDouble(userCommands[2]);
                     int decodedByBruteForceFile = new BruteForce().decodeByBruteForce(Path.of(userCommands[1]), accuracy);
                     if (decodedByBruteForceFile == 0) {
-                        System.out.println("File wasn't decrypted...");
+                        System.out.println("File wasn't decrypted... try to use lower accuracy.");
                     }
                     else {
                         System.out.println(decodedByBruteForceFile +  " file(s) decrypted successfully... " );
