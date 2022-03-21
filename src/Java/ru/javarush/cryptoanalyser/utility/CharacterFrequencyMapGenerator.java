@@ -4,15 +4,15 @@ import ru.javarush.cryptoanalyser.Constants.Constants;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class CharacterFrequencyMapGenerator {
-    public HashMap<Character, Double> generateFrequencyMap(String fileName)
-    {
+    public HashMap<Character, Double> generateFrequencyMap(String fileName) {
         HashMap<Character, Double> resultMap;
-        List<String> fileLines = null;
+        List<String> fileLines = new ArrayList<>();
         double sumOfCharsNumbers = 0;
         try {
             fileLines = new TxtFileReader().txtToList(Path.of(fileName));
@@ -26,12 +26,13 @@ public class CharacterFrequencyMapGenerator {
         }
 
         for (Map.Entry<Character, Double> entry : resultMap.entrySet()) {
-            entry.setValue(entry.getValue() / sumOfCharsNumbers * 100);
+            entry.setValue(entry.getValue() / sumOfCharsNumbers * Constants.MAX_PERCENT_VALUE);
         }
 
         return resultMap;
     }
-    public HashMap<Character, Double> calculateCharsNumbers(List<String> fileLines){
+
+    public HashMap<Character, Double> calculateCharsNumbers(List<String> fileLines) {
         HashMap<Character, Double> workMap = new HashMap<>();
 
         for (int i = 0; i < Constants.ALPHABET.length; i++) {

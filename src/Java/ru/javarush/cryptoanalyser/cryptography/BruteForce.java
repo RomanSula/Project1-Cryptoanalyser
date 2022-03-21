@@ -22,39 +22,40 @@ public class BruteForce {
 
         int nameCounter = 0;
         for (List<String> stringList : successList) {
-            String outFileName = nameCounter == 0 ? "decryptedFile" : "decryptedFile" + nameCounter;
+            String outFileName = nameCounter == 0 ? Constants.DECRYPTED_FILE_NAME : Constants.DECRYPTED_FILE_NAME + nameCounter;
             new TxtFileWriter().fileWriterMethod(stringList, outFileName + ".txt");
             nameCounter++;
         }
         return successList.size();
     }
 
-    public boolean isBruteForceSucceeded(List<String> fileLinesList, double accuracy) {
+    public boolean isBruteForceSucceeded(List<String> fileLines, double accuracy) {
         int shortWordsCounter = 0;
         int correctShortWordsCounter = 0;
 
-        for (String s : fileLinesList) {
+        for (String s : fileLines) {
             if (isGapIncluded(s) && isWordStartsNormal(s)) {
                 String[] words = s.split(" ");
                 for (String word : words) {
-                    if (word.length() == 1) {
+                    if (word.length() == Constants.SHOR_WORD_LENGTH) {
                         shortWordsCounter++;
                         if (Constants.SHORT_WORD_DICTIONARY.contains(word.toLowerCase())) {
                             correctShortWordsCounter++;
                         }
                     }
                 }
-            }
-            else return false;
+            } else return false;
         }
 
         return (correctShortWordsCounter * 1.0 / shortWordsCounter > accuracy);
     }
-    public boolean isGapIncluded(String s){
+
+    public boolean isGapIncluded(String s) {
         return s.length() <= 40 || s.contains(" ");
     }
-    public boolean isWordStartsNormal(String s){
-        if (s.length() > 0)return (!Constants.ILLEGAL_START_FOR_WORD.contains(s.substring(0,1)));
+
+    public boolean isWordStartsNormal(String s) {
+        if (s.length() > 0) return (!Constants.ILLEGAL_START_FOR_WORD.contains(s.substring(0, 1)));
         else return true;
     }
 }

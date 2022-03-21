@@ -14,14 +14,9 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Dialogue {
-    public void Start() {
+    public void start() {
 
-        System.out.println("Format of commands is: [command] [file_name] [key_value] or [accuracy]");
-        System.out.println("[command]: [C] Crypt, [D] Decrypt, [B] Bruteforce, [A] StatisticalAnalysis, [exit] escape");
-        System.out.println("For [C]: c NormalFile.txt key(int)");
-        System.out.println("For [D]: d NormalFile.txt key(int)");
-        System.out.println("For [B]: b EncryptedFile.txt accuracy(0.95)");
-        System.out.println("For [A]: a EncryptedFile.txt ExampleFileName.txt");
+        System.out.println(Constants.START_CONSOLE_MESSAGE);
         Scanner console = new Scanner(System.in);
         String inLine = console.nextLine();
 
@@ -31,40 +26,35 @@ public class Dialogue {
 
             if (isValidCommand(userCommands) && isValidFile(userCommands[1])) {
                 if (userCommands[0].equalsIgnoreCase("c")) {
-                    Path encryptedFileName = Path.of("encrypted.txt");
+                    Path encryptedFileName = Path.of(Constants.ENCRYPTED_FILE_NAME);
                     new PreviousFileCleaner().cleanPreviousFiles(encryptedFileName);
                     List<String> cResultList = new Encode().encodeTxtFile(Path.of(userCommands[1]), Integer.parseInt(userCommands[2]));
-                    new TxtFileWriter().fileWriterMethod(cResultList, "encrypted.txt");
+                    new TxtFileWriter().fileWriterMethod(cResultList, Constants.ENCRYPTED_FILE_NAME);
                 }
-                if (userCommands[0].equalsIgnoreCase("d")){
-                    Path decryptedFileName = Path.of("decrypted.txt");
+                if (userCommands[0].equalsIgnoreCase("d")) {
+                    Path decryptedFileName = Path.of(Constants.DECRYPTED_FILE_NAME);
                     new PreviousFileCleaner().cleanPreviousFiles(decryptedFileName);
                     List<String> dResultList = new Decode().decodeTxtFile(Path.of(userCommands[1]), Integer.parseInt(userCommands[2]));
-                    new TxtFileWriter().fileWriterMethod(dResultList, "decrypted.txt");
+                    new TxtFileWriter().fileWriterMethod(dResultList, Constants.DECRYPTED_FILE_NAME);
                 }
-                if (userCommands[0].equalsIgnoreCase("b")){
+                if (userCommands[0].equalsIgnoreCase("b")) {
                     double accuracy = Double.parseDouble(userCommands[2]);
                     int decodedByBruteForceFile = new BruteForce().decodeByBruteForce(Path.of(userCommands[1]), accuracy);
                     if (decodedByBruteForceFile == 0) {
                         System.out.println("File wasn't decrypted... try to use lower accuracy.");
-                    }
-                    else {
-                        System.out.println(decodedByBruteForceFile +  " file(s) decrypted successfully... " );
+                    } else {
+                        System.out.println(decodedByBruteForceFile + " file(s) decrypted successfully... ");
                     }
                 }
-                if (userCommands[0].equalsIgnoreCase("a")){
+                if (userCommands[0].equalsIgnoreCase("a")) {
                     String exampleFileName = userCommands[2];
                     String encryptedFileName = userCommands[1];
                     new TxtFileWriter().fileWriterMethod(new StatisticalAnalysis().
-                            decodeByStatisticalAnalysis(encryptedFileName, exampleFileName), "decrypted.txt");
-                    //new StatisticalAnalysis().
-                    //      decodeByStatisticalAnalysis(exampleFileName, encryptedFileName);
+                            decodeByStatisticalAnalysis(encryptedFileName, exampleFileName), Constants.DECRYPTED_FILE_NAME);
                 }
             } else {
                 System.out.println("Invalid command");
             }
-
-
             inLine = console.nextLine();
         }
 
@@ -79,15 +69,13 @@ public class Dialogue {
         double keyValue = 0;
         try {
             keyValue = Double.parseDouble(key);
-        }
-        catch (NumberFormatException e){
+        } catch (NumberFormatException e) {
             System.out.println("Illegal key value...");
         }
         return (keyValue > 0 && keyValue < Constants.ALPHABET.length);
     }
 
     public static boolean isValidCommand(String[] commands) {
-
         return (commands.length == 3 && commands[0].equals("c") || commands[0].equals("d")
                 || commands[0].equals("b") || commands[0].equals("a"));
     }

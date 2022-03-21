@@ -1,5 +1,6 @@
 package ru.javarush.cryptoanalyser.cryptography;
 
+import ru.javarush.cryptoanalyser.Constants.Constants;
 import ru.javarush.cryptoanalyser.utility.CharacterFrequencyMapGenerator;
 import ru.javarush.cryptoanalyser.utility.TxtFileReader;
 
@@ -51,7 +52,7 @@ public class StatisticalAnalysis {
         HashMap<Character, Character> confirmationResult = new HashMap<>();
 
         for (Map.Entry<Character, Double> entry : exampleMap.entrySet()) {
-            double minDifference = 100.0;
+            double minDifference = Constants.MAX_PERCENT_VALUE * 1.0;
             double frequencyExample = entry.getValue();
 
             for (Map.Entry<Character, Double> encryptedEntry : encryptedMap.entrySet()) {

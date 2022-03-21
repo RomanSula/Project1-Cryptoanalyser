@@ -5,7 +5,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 public class PreviousFileCleaner {
-    public void cleanPreviousFiles(Path fileName){
+
+    public void cleanPreviousFiles(Path fileName) {
         if (Files.exists(fileName)) {
             try {
                 Files.delete(fileName);
