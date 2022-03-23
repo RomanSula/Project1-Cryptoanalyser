@@ -5,10 +5,8 @@ import ru.javarush.cryptoanalyser.cryptography.BruteForce;
 import ru.javarush.cryptoanalyser.cryptography.Decode;
 import ru.javarush.cryptoanalyser.cryptography.Encode;
 import ru.javarush.cryptoanalyser.cryptography.StatisticalAnalysis;
-import ru.javarush.cryptoanalyser.utility.PreviousFileCleaner;
-import ru.javarush.cryptoanalyser.utility.TxtFileWriter;
+import ru.javarush.cryptoanalyser.utility.TxtFileWorker;
 
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Scanner;
@@ -24,18 +22,18 @@ public class Dialogue {
         while (!inLine.equals("exit")) {
             String[] userCommands = inLine.split(" ");
 
-            if (isValidCommand(userCommands) && isValidFile(userCommands[1])) {
+            if (isValidCommand(userCommands) && TxtFileWorker.getInstance().isValidFile(userCommands[1])) {
                 if (userCommands[0].equalsIgnoreCase("c")) {
                     Path encryptedFileName = Path.of(Constants.ENCRYPTED_FILE_NAME);
-                    new PreviousFileCleaner().cleanPreviousFiles(encryptedFileName);
+                    TxtFileWorker.getInstance().cleanPreviousFiles(encryptedFileName);
                     List<String> cResultList = new Encode().encodeTxtFile(Path.of(userCommands[1]), Integer.parseInt(userCommands[2]));
-                    new TxtFileWriter().fileWriterMethod(cResultList, Constants.ENCRYPTED_FILE_NAME);
+                    TxtFileWorker.getInstance().fileWriterMethod(cResultList, Constants.ENCRYPTED_FILE_NAME);
                 }
                 if (userCommands[0].equalsIgnoreCase("d")) {
                     Path decryptedFileName = Path.of(Constants.DECRYPTED_FILE_NAME);
-                    new PreviousFileCleaner().cleanPreviousFiles(decryptedFileName);
+                    TxtFileWorker.getInstance().cleanPreviousFiles(decryptedFileName);
                     List<String> dResultList = new Decode().decodeTxtFile(Path.of(userCommands[1]), Integer.parseInt(userCommands[2]));
-                    new TxtFileWriter().fileWriterMethod(dResultList, Constants.DECRYPTED_FILE_NAME);
+                    TxtFileWorker.getInstance().fileWriterMethod(dResultList, Constants.DECRYPTED_FILE_NAME);
                 }
                 if (userCommands[0].equalsIgnoreCase("b")) {
                     double accuracy = Double.parseDouble(userCommands[2]);
@@ -49,7 +47,7 @@ public class Dialogue {
                 if (userCommands[0].equalsIgnoreCase("a")) {
                     String exampleFileName = userCommands[2];
                     String encryptedFileName = userCommands[1];
-                    new TxtFileWriter().fileWriterMethod(new StatisticalAnalysis().
+                    TxtFileWorker.getInstance().fileWriterMethod(new StatisticalAnalysis().
                             decodeByStatisticalAnalysis(encryptedFileName, exampleFileName), Constants.DECRYPTED_FILE_NAME);
                 }
             } else {
@@ -59,10 +57,6 @@ public class Dialogue {
         }
 
 
-    }
-
-    public static boolean isValidFile(String file) {
-        return (file.endsWith(".txt") && Files.isRegularFile(Path.of(file)));
     }
 
     public static boolean isValidKey(String key) {

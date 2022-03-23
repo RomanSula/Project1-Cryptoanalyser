@@ -1,7 +1,7 @@
 package ru.javarush.cryptoanalyser.cryptography;
 
 import ru.javarush.cryptoanalyser.Constants.Constants;
-import ru.javarush.cryptoanalyser.utility.TxtFileWriter;
+import ru.javarush.cryptoanalyser.utility.TxtFileWorker;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -23,7 +23,7 @@ public class BruteForce {
         int nameCounter = 0;
         for (List<String> stringList : successList) {
             String outFileName = nameCounter == 0 ? Constants.DECRYPTED_FILE_NAME : Constants.DECRYPTED_FILE_NAME + nameCounter;
-            new TxtFileWriter().fileWriterMethod(stringList, outFileName + ".txt");
+            TxtFileWorker.getInstance().fileWriterMethod(stringList, outFileName + ".txt");
             nameCounter++;
         }
         return successList.size();

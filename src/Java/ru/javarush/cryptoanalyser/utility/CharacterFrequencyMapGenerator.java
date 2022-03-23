@@ -15,7 +15,7 @@ public class CharacterFrequencyMapGenerator {
         List<String> fileLines = new ArrayList<>();
         double sumOfCharsNumbers = 0;
         try {
-            fileLines = new TxtFileReader().txtToList(Path.of(fileName));
+            fileLines = TxtFileWorker.getInstance().txtToList(Path.of(fileName));
         } catch (IOException e) {
             e.printStackTrace();
         }

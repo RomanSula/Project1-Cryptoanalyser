@@ -2,7 +2,7 @@ package ru.javarush.cryptoanalyser.cryptography;
 
 import ru.javarush.cryptoanalyser.Constants.Constants;
 import ru.javarush.cryptoanalyser.utility.CharacterFrequencyMapGenerator;
-import ru.javarush.cryptoanalyser.utility.TxtFileReader;
+import ru.javarush.cryptoanalyser.utility.TxtFileWorker;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -17,7 +17,7 @@ public class StatisticalAnalysis {
         List<String> encryptedLines = null;
         List<String> resultList = new ArrayList<>();
         try {
-            encryptedLines = new TxtFileReader().txtToList(Path.of(encryptedFileName));
+            encryptedLines = TxtFileWorker.getInstance().txtToList(Path.of(encryptedFileName));
         } catch (IOException e) {
             e.printStackTrace();
         }

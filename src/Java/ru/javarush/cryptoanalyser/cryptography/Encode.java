@@ -1,7 +1,7 @@
 package ru.javarush.cryptoanalyser.cryptography;
 
 import ru.javarush.cryptoanalyser.utility.CryptoMapGenerator;
-import ru.javarush.cryptoanalyser.utility.TxtFileReader;
+import ru.javarush.cryptoanalyser.utility.TxtFileWorker;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -18,7 +18,7 @@ public class Encode {
 
         try {
             //Charset charset = StandardCharsets.UTF_8;
-            List<String> allLinesFromNormalFile = new TxtFileReader().txtToList(normalFile);
+            List<String> allLinesFromNormalFile = TxtFileWorker.getInstance().txtToList(normalFile);
 
             for (String s : allLinesFromNormalFile) {
                 char[] stringChars = s.toCharArray();
