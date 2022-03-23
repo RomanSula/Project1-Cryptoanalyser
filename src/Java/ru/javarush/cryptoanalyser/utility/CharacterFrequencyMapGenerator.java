@@ -2,9 +2,7 @@ package ru.javarush.cryptoanalyser.utility;
 
 import ru.javarush.cryptoanalyser.Constants.Constants;
 
-import java.io.IOException;
 import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,13 +10,10 @@ import java.util.Map;
 public class CharacterFrequencyMapGenerator {
     public HashMap<Character, Double> generateFrequencyMap(String fileName) {
         HashMap<Character, Double> resultMap;
-        List<String> fileLines = new ArrayList<>();
+        List<String> fileLines;
         double sumOfCharsNumbers = 0;
-        try {
-            fileLines = TxtFileWorker.getInstance().txtToList(Path.of(fileName));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
+        fileLines = TxtFileWorker.getInstance().txtToList(Path.of(fileName));
         resultMap = calculateCharsNumbers(fileLines);
 
         for (Map.Entry<Character, Double> entry : resultMap.entrySet()) {

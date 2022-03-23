@@ -4,7 +4,6 @@ import ru.javarush.cryptoanalyser.Constants.Constants;
 import ru.javarush.cryptoanalyser.utility.CharacterFrequencyMapGenerator;
 import ru.javarush.cryptoanalyser.utility.TxtFileWorker;
 
-import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,14 +13,11 @@ import java.util.Map;
 public class StatisticalAnalysis {
 
     public List<String> decodeByStatisticalAnalysis(String encryptedFileName, String exampleFileName) {
-        List<String> encryptedLines = null;
+        List<String> encryptedLines;
         List<String> resultList = new ArrayList<>();
-        try {
-            encryptedLines = TxtFileWorker.getInstance().txtToList(Path.of(encryptedFileName));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        encryptedLines = TxtFileWorker.getInstance().txtToList(Path.of(encryptedFileName));
         HashMap<Character, Character> decryptDictionary;
+
         HashMap<Character, Double> exampleMap =
                 new CharacterFrequencyMapGenerator().generateFrequencyMap(exampleFileName);
         HashMap<Character, Double> encryptedMap =

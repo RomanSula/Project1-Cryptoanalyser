@@ -3,7 +3,6 @@ package ru.javarush.cryptoanalyser.cryptography;
 import ru.javarush.cryptoanalyser.utility.CryptoMapGenerator;
 import ru.javarush.cryptoanalyser.utility.TxtFileWorker;
 
-import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -16,26 +15,23 @@ public class Encode {
         HashMap<Character, Character> cryptoMap = new CryptoMapGenerator().generateCryptoMap(key);
         List<String> resultList = new ArrayList<>();
 
-        try {
-            //Charset charset = StandardCharsets.UTF_8;
-            List<String> allLinesFromNormalFile = TxtFileWorker.getInstance().txtToList(normalFile);
 
-            for (String s : allLinesFromNormalFile) {
-                char[] stringChars = s.toCharArray();
-                for (int i = 0; i < stringChars.length; i++) {
-                    for (Map.Entry<Character, Character> entry : cryptoMap.entrySet()) {
-                        boolean isUpperCase = Character.isUpperCase(stringChars[i]);
-                        if (Character.toLowerCase(stringChars[i]) == entry.getKey()) {
-                            stringChars[i] = isUpperCase ? Character.toUpperCase(entry.getValue()) : entry.getValue();
-                            break;
-                        }
+        List<String> allLinesFromNormalFile = TxtFileWorker.getInstance().txtToList(normalFile);
+
+        for (String s : allLinesFromNormalFile) {
+            char[] stringChars = s.toCharArray();
+            for (int i = 0; i < stringChars.length; i++) {
+                for (Map.Entry<Character, Character> entry : cryptoMap.entrySet()) {
+                    boolean isUpperCase = Character.isUpperCase(stringChars[i]);
+                    if (Character.toLowerCase(stringChars[i]) == entry.getKey()) {
+                        stringChars[i] = isUpperCase ? Character.toUpperCase(entry.getValue()) : entry.getValue();
+                        break;
                     }
                 }
-                resultList.add(new String(stringChars));
             }
-        } catch (IOException e) {
-            e.printStackTrace();
+            resultList.add(new String(stringChars));
         }
+
         return resultList;
     }
 }

@@ -55,18 +55,6 @@ public class Dialogue {
             }
             inLine = console.nextLine();
         }
-
-
-    }
-
-    public static boolean isValidKey(String key) {
-        double keyValue = 0;
-        try {
-            keyValue = Double.parseDouble(key);
-        } catch (NumberFormatException e) {
-            System.out.println("Illegal key value...");
-        }
-        return (keyValue > 0 && keyValue < Constants.ALPHABET.length);
     }
 
     public static boolean isValidCommand(String[] commands) {

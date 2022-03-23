@@ -24,11 +24,10 @@ public class CryptoMapGenerator {
                 char decodedChar;
                 if ((i + key) < 0) {
                     decodedChar = Constants.ALPHABET[Constants.ALPHABET.length + key + i];
-                    cryptoMap.put(Constants.ALPHABET[i], decodedChar);
                 } else {
                     decodedChar = Constants.ALPHABET[i + key];
-                    cryptoMap.put(Constants.ALPHABET[i], decodedChar);
                 }
+                cryptoMap.put(Constants.ALPHABET[i], decodedChar);
             }
         }
         return cryptoMap;
